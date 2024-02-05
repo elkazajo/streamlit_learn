@@ -4,7 +4,17 @@ import numpy as np
 import pickle   
 
 
-can_reload = False
+dividends = 0
+
+
+if 'open_price' not in st.session_state:
+    st.session_state['open_price'] = 0
+if 'high' not in st.session_state:
+    st.session_state['high'] = 0
+if 'low' not in st.session_state:
+    st.session_state['low'] = 0
+if 'volume' not in st.session_state:
+    st.session_state['volume'] = 0
 
 
 st.title('Прогнозирование цены активов Mastercard')
@@ -15,33 +25,29 @@ with st.expander("Описание проекта"):
 number_inputs_container = st.container(border=True)
 
 
-open_price = number_inputs_container.number_input('Цена актива в начале торгового дня')
-number_inputs_container.write(open_price)
+number_inputs_container.number_input('Цена актива в начале торгового дня', key='open_price')
+number_inputs_container.write(st.session_state.open_price)
 
-high = number_inputs_container.number_input('Максимальная цена актива за торговый день')
-number_inputs_container.write(high)
+number_inputs_container.number_input('Максимальная цена актива за торговый день', key='high')
+number_inputs_container.write(st.session_state['high'])
 
-low = number_inputs_container.number_input('Минимальная цена актива за торговый день')
-number_inputs_container.write(low)
+number_inputs_container.number_input('Минимальная цена актива за торговый день', key='low')
+number_inputs_container.write(st.session_state['low'])
 
-volume = number_inputs_container.number_input('Объем активов, проданных или купленных в течение торгового дня')
-number_inputs_container.write(volume)
-
-dividends = number_inputs_container.number_input('Дивиденды, выплаченные в этот день (0 если не было)')
-number_inputs_container.write(dividends)
+number_inputs_container.number_input('Объем активов, проданных или купленных в течение торгового дня', key='volume')
+number_inputs_container.write(st.session_state['volume'])
 
 
 model_file_path = "models\project_1_mastercard.sav"
 model = pickle.load(open(model_file_path, 'rb'))
 
 
-@st.cache_data
-def predict_close(open_price, high, low, volume, dividends):  
+def predict_close():  
     input_dataframe = pd.DataFrame({
-        'open' : open_price,
-        'high' : high,
-        'low' : low,
-        'volume' : volume,
+        'open' : st.session_state['open_price'],
+        'high' : st.session_state['high'],
+        'low' : st.session_state['low'],
+        'volume' : st.session_state['volume'],
         'dividends' : dividends
     }, index=[0])
 
@@ -52,19 +58,19 @@ def predict_close(open_price, high, low, volume, dividends):
     return str(*np.expm1(prediction))
 
 
-@st.cache_data
 def reload():
-    open_price = high = low = volume = dividends = 0.0
-    return open_price, high, low, volume, dividends
+    del st.session_state['open_price']
+    del st.session_state['high']
+    del st.session_state['low']
+    del st.session_state['volume']
 
 
-st.button("Сбросить", type="primary")
+st.button("Сбросить", type="primary", on_click=reload)
 if st.button('Предсказать'):    
     message = st.chat_message("assistant")
     message.write("Примерная цена актива в конце торгового дня:")
-    message.write(predict_close(open_price, high, low, volume, dividends))
+    message.write(predict_close())
 else:  
-    open_price, high, low, volume, dividends = reload()
     message = st.chat_message("assistant")   
     message.write("Ожидаю данные для прогнозирования...")
     message.write("Бип боп биип...")
