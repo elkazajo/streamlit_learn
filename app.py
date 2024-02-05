@@ -3,6 +3,10 @@ import pandas as pd
 import numpy as np
 import pickle   
 
+
+can_reload = False
+
+
 st.title('Прогнозирование цены активов Mastercard')
 with st.expander("Описание проекта"):
     st.write('''Данный проект может использоваться для анализа рыночной активности и трендов по Mastercard, а также для принятия решений в инвестиционной стратегии.''')
@@ -32,7 +36,7 @@ model = pickle.load(open(model_file_path, 'rb'))
 
 
 @st.cache_data
-def predict_close():   
+def predict_close(open_price, high, low, volume, dividends):  
     input_dataframe = pd.DataFrame({
         'open' : open_price,
         'high' : high,
@@ -48,13 +52,19 @@ def predict_close():
     return str(*np.expm1(prediction))
 
 
-st.button("Сбросить", type="primary")
+@st.cache_data
+def reload():
+    open_price = high = low = volume = dividends = 0.0
+    return open_price, high, low, volume, dividends
 
-if st.button('Предсказать'):
+
+st.button("Сбросить", type="primary")
+if st.button('Предсказать'):    
     message = st.chat_message("assistant")
     message.write("Примерная цена актива в конце торгового дня:")
-    message.write(predict_close())
-else:
-    message = st.chat_message("assistant")
+    message.write(predict_close(open_price, high, low, volume, dividends))
+else:  
+    open_price, high, low, volume, dividends = reload()
+    message = st.chat_message("assistant")   
     message.write("Ожидаю данные для прогнозирования...")
     message.write("Бип боп биип...")
