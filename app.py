@@ -8,13 +8,13 @@ dividends = 0
 
 
 if 'open_price' not in st.session_state:
-    st.session_state['open_price'] = 0
+    st.session_state.open_price = 0
 if 'high' not in st.session_state:
-    st.session_state['high'] = 0
+    st.session_state.high = 0
 if 'low' not in st.session_state:
-    st.session_state['low'] = 0
+    st.session_state.low = 0
 if 'volume' not in st.session_state:
-    st.session_state['volume'] = 0
+    st.session_state.volume = 0
 
 
 st.title('Прогнозирование цены активов Mastercard')
@@ -29,13 +29,13 @@ number_inputs_container.number_input('Цена актива в начале то
 number_inputs_container.write(st.session_state.open_price)
 
 number_inputs_container.number_input('Максимальная цена актива за торговый день', key='high')
-number_inputs_container.write(st.session_state['high'])
+number_inputs_container.write(st.session_state.high)
 
 number_inputs_container.number_input('Минимальная цена актива за торговый день', key='low')
-number_inputs_container.write(st.session_state['low'])
+number_inputs_container.write(st.session_state.low)
 
 number_inputs_container.number_input('Объем активов, проданных или купленных в течение торгового дня', key='volume')
-number_inputs_container.write(st.session_state['volume'])
+number_inputs_container.write(st.session_state.volume)
 
 
 model_file_path = "models\project_1_mastercard.sav"
@@ -44,10 +44,10 @@ model = pickle.load(open(model_file_path, 'rb'))
 
 def predict_close():  
     input_dataframe = pd.DataFrame({
-        'open' : st.session_state['open_price'],
-        'high' : st.session_state['high'],
-        'low' : st.session_state['low'],
-        'volume' : st.session_state['volume'],
+        'open' : st.session_state.open_price,
+        'high' : st.session_state.high,
+        'low' : st.session_state.low,
+        'volume' : st.session_state.volume,
         'dividends' : dividends
     }, index=[0])
 
@@ -59,10 +59,10 @@ def predict_close():
 
 
 def reload():
-    del st.session_state['open_price']
-    del st.session_state['high']
-    del st.session_state['low']
-    del st.session_state['volume']
+    del st.session_state.open_price
+    del st.session_state.high
+    del st.session_state.low
+    del st.session_state.volume
 
 
 st.button("Сбросить", type="primary", on_click=reload)
