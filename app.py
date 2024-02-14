@@ -18,7 +18,7 @@ if 'volume' not in st.session_state:
 
 
 st.title('Forecasting the closing price of Mastercard assets')
-with st.expander("Описание проекта"):
+with st.expander("Project Descripiton"):
     st.write('''This project can be used to analyze market activity and trends for Mastercard, as well as for decision-making in investment strategy.''')
 
 
@@ -55,7 +55,7 @@ def predict_close():
 
     prediction = model.predict(input_data)
 
-    return str(*np.expm1(prediction))
+    return str(round(*np.expm1(prediction), 2))
 
 
 def reload():
@@ -69,7 +69,7 @@ st.button("Reset", type="primary", on_click=reload)
 if st.button('Predict'):    
     message = st.chat_message("assistant")
     message.write("The approximate price of the asset at the end of the trading day is:")
-    message.write(round(predict_close(), 2))
+    message.write(predict_close())
 else:  
     message = st.chat_message("assistant")   
     message.write("Awaiting data for forecasting...")
