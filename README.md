@@ -11,7 +11,7 @@ The data for this application is sourced from [Mastercard Investor Relations](ht
 Using the provided data, the application predicts the closing price of Mastercard assets. This prediction is made through 'project_1_mastercard' model.
 
 ## How to Use
-1. Input the Day's Open, Intraday High, Intraday Low, and Volume.
+1. Input the Day's Open, Intraday High, Intraday Low, and Volume. (Inputs can be taken from the provided Data Source)
 2. Press the "Predict" button.
 3. The application will display the predicted closing price of Mastercard assets.
 
