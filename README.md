@@ -1,5 +1,6 @@
 ## Data Source
-The data for this application is sourced from [Mastercard Investor Relations](https://investor.mastercard.com/stock-information/stock-data-and-chart/default.aspx). 
+The model was trained on a dataset that can be found [here](https://www.kaggle.com/datasets/kalilurrahman/mastercard-stock-data-latest-and-updated). 
+For validation purposes, inputs can be taken from [Mastercard Investor Relations](https://investor.mastercard.com/stock-information/stock-data-and-chart/default.aspx). 
 
 ## Features
 - **Day's Open**: The price of Mastercard assets at the beginning of the trading day.
