@@ -9,7 +9,7 @@
 - **Volume**: The total number of Mastercard assets traded during the trading day.
 
 ## Prediction
-Using the provided data, the application predicts the closing price of Mastercard assets. This prediction is made through 'project_1_mastercard' model.
+Using the provided data, the application predicts the closing price of Mastercard assets. This prediction is made through linear regression model.
 
 ## How to Use
 1. Input the Day's Open, Intraday High, Intraday Low, and Volume. (Inputs can be taken from the provided Data Source)
